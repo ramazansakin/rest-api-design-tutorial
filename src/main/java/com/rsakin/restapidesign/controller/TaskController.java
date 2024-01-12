@@ -30,8 +30,22 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        return ResponseEntity.ok(tasks);
+    public ResponseEntity<Object> getAllTasks(@RequestParam(defaultValue = "0") int page,
+                                              @RequestParam(defaultValue = "10") int count) {
+
+        // Validate offset and limit is not sub-zero
+        if (page < 1 || count < 1) {
+            return ResponseEntity.badRequest().body("Error occurred. (page) and (count) needs to be positive");
+        }
+
+        // Apply pagination
+        page -= 1; // page and index sync
+        int startIndex = page * count;
+        if (startIndex >= tasks.size()) startIndex = 0;
+        int endIndex = startIndex + Math.min(count, tasks.size() - startIndex);
+        List<Task> paginatedTasks = tasks.subList(startIndex, endIndex);
+
+        return ResponseEntity.ok(paginatedTasks);
     }
 
     @PutMapping("/{id}")
