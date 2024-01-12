@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -39,13 +40,19 @@ public class TaskController {
         }
 
         // Apply pagination
-        page -= 1; // page and index sync
-        int startIndex = page * count;
-        if (startIndex >= tasks.size()) startIndex = 0;
-        int endIndex = startIndex + Math.min(count, tasks.size() - startIndex);
-        List<Task> paginatedTasks = tasks.subList(startIndex, endIndex);
+        List<Task> paginatedTasks = paginateList(tasks, page, count);
 
         return ResponseEntity.ok(paginatedTasks);
+    }
+
+    public static <T> List<T> paginateList(List<T> list, int page, int count) {
+        page -= 1; // Page starts from 1, index from 0
+        int startIndex = page * count;
+        if (startIndex >= list.size()) {
+            return Collections.emptyList(); // Handle empty result for out-of-bounds pages
+        }
+        int endIndex = Math.min(startIndex + count, list.size());
+        return list.subList(startIndex, endIndex);
     }
 
     @PutMapping("/{id}")
