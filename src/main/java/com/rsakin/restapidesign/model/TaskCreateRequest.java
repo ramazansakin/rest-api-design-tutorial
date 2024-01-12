@@ -1,6 +1,11 @@
 package com.rsakin.restapidesign.model;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.Objects;
 
-public record TaskCreateRequest(@NotBlank String headline, String detail) {
+public record TaskCreateRequest(String headline, String detail) {
+
+    public TaskCreateRequest {
+        Objects.requireNonNull(headline); // Set headline as NotNull
+    }
+
 }
