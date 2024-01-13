@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
 
     private final List<Task> tasks = new ArrayList<>();
