@@ -2,11 +2,10 @@ package com.rsakin.restapidesign;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 
-@SpringBootApplication
-@EnableWebSecurity
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class RestApiDesignApplication {
 
     public static void main(String[] args) {
